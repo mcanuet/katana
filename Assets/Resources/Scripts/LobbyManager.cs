@@ -9,8 +9,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     private GameObject RoomList;
+    [SerializeField]
+    private InputField RoomNameInput;
+    [SerializeField]
+    private Dropdown RoomPlayer;
 
-    private List<Button> InstantiateButton = new List<Button>();
+    private List<GameObject> InstantiateButton = new List<GameObject>();
 
     void Awake()
     {
@@ -29,8 +33,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                Button btn = new UnityEngineButton();
-                btn.GetComponentInChildren<Text>().text = room.Name;
+                GameObject roomBtn = Instantiate<GameObject>(Resources.Load<GameObject>("UI/RoomButton"));
+                roomBtn.transform.SetParent(RoomList.transform);
+                roomBtn.GetComponentInChildren<Text>().text = room.Name;
+                roomBtn.GetComponentInChildren<Button>().onClick.AddListener(delegate { ConnectToRoom(room.Name); });
+                InstantiateButton.Add(roomBtn);
             }
         }
     }
@@ -38,5 +45,18 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void ConnectToRoom(string RoomName)
     {
         FindObjectOfType<Launcher>().LogOnScreen("Connecting to room " + RoomName, Enums.LogLevel.Log);
+    }
+
+    public void CreateRoom()
+    {
+        if (RoomNameInput.GetComponentInChildren<Text>().text == string.Empty)
+        {
+            FindObjectOfType<Launcher>().LogOnScreen("Room Name is empty", Enums.LogLevel.Warning);
+            return;
+        }
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = byte.Parse(RoomPlayer.options[RoomPlayer.value].text);
+        Debug.Log("Room Size: " + roomOptions.MaxPlayers.ToString());
+        PhotonNetwork.CreateRoom(RoomNameInput.GetComponentInChildren<Text>().text, roomOptions);
     }
 }

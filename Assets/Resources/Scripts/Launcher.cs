@@ -99,8 +99,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         LogOnScreen("Connect to the master server", LogLevel.Log);
         LogOnScreen("Region of the master Server: " + PhotonNetwork.CloudRegion, LogLevel.Log);
-
-        LobbyScreen.SetActive(true);
+        PhotonNetwork.JoinLobby();
     }
 
 
@@ -117,6 +116,12 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             Debug.Log(LI.ToString());
         }
+    }
+
+    public override void OnJoinedLobby()
+    {
+        LogOnScreen("Connected to lobby", LogLevel.Log);
+        LobbyScreen.SetActive(true);
     }
 
     #endregion

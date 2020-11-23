@@ -86,6 +86,12 @@ public class Launcher : MonoBehaviourPunCallbacks
         LogText.text += "<color=" + color + ">" + Log + "</color>\n";
     }
 
+    public void StartGame()
+    {
+        LogOnScreen("Starting the game", LogLevel.Log);
+        // Todo: load a scene who contain the game
+    }
+
     #endregion
 
     #region Private Methode
@@ -105,7 +111,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        LogOnScreen("Disconet from master reason: " + cause.ToString() , LogLevel.Warning);
+        LogOnScreen("Disconnect from master reason: " + cause.ToString() , LogLevel.Warning);
     }
 
     public override void OnLobbyStatisticsUpdate(List<TypedLobbyInfo> lobbyStatistics)

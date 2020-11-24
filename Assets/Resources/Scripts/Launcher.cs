@@ -22,7 +22,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject LobbyScreen;
 
-    private string GameVersion = "1.0";
+    private string GameVersion = string.Empty;
     private const string PlayerNameKey = "PlayerName";
     private string PlayerName = string.Empty;
 
@@ -30,6 +30,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     void Awake()
     {
+        GameVersion = Application.version;
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.NetworkingClient.EnableLobbyStatistics = true;
     }
